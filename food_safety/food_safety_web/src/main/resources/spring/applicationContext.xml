@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		"
+	default-lazy-init="true">
+
+	<description>Spring公共配置</description>
+	
+<!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+	<context:component-scan base-package="com.ichinait.food" >
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+	<!-- 扫描basePackage下所有的接口 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.ichinait.food.db.mapper" />
+	</bean> 
+	<!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
+		<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close" >
+			<!-- Connection Info -->
+			<property name="driverClassName" value="${jdbc.driver}" />
+			<property name="url" value="${jdbc.url}" />
+			<property name="username" value="${jdbc.username}" />
+			<property name="password" value="${jdbc.password}" />
+			<property name="initialSize" value="${jdbc.initSize}" />
+			<property name="maxActive" value="${jdbc.pool.maxActive}" />
+			<!-- 最大空闲连接: 连接池中容许保持空闲状态的最大连接数量, 超过的空闲连接将被释放, 如果设置为负数表示不限制 -->
+			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
+			<!--  最小空闲连接: 连接池中容许保持空闲状态的最小连接数量, 低于这个数量将创建新的连接, 如果设置为0 则不创建 -->
+			<property name="minIdle" value="0" />
+			<property name="defaultAutoCommit" value="false" />
+			<!-- 在空闲连接回收器线程运行期间休眠的时间值, 以毫秒为单位. 如果设置为非正数, 则不运行空闲连接回收器线程
+	这个值不应该小于1秒，它决定线程池多久验证连接空闲或丢弃连接。 -->
+			<property name="timeBetweenEvictionRunsMillis" value="60000" />
+			<!-- 连接在池中保持空闲而不被空闲连接回收器线程( 如果有) 回收的最小时间值，单位毫秒 -->
+			<property name="minEvictableIdleTimeMillis" value="1200000" />
+			<property name="validationQuery" value="select 1" />
+			<!-- (long) 避免过度验证，保证验证不超过这个频率——以毫秒为单位。如果一个连接应该被验证，
+            但上次验证未达到指定间隔，将不再次验证。  30000（30秒） -->
+			<property name="validationInterval" value="30000" />
+			<!-- 验证失败时，是否将连接从池中丢弃 -->
+			<property name="testWhileIdle" value="true" />
+		</bean>
+		
+	<!-- MyBatis配置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+
+		<property name="dataSource" ref="dataSource" />
+
+		<!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
+
+		<property name="typeAliasesPackage" value="com.ichinait.food.db.entity" />
+
+		<!-- 显式指定Mapper文件位置 -->
+
+		<property name="mapperLocations" value="classpath*:com/ichinait/food/db/sqlmapper/**/*Mapper*.xml" />
+		<!-- 分页插件 -->
+		<property name="plugins">
+		    <array>
+		      <bean class="com.github.pagehelper.PageHelper">
+		        <property name="properties">
+		          <value>
+		            dialect=mysql
+		          </value>
+		        </property>
+		      </bean>
+		    </array>
+		  </property>
+
+	</bean>
+
+	
+	
+	<!-- 事务管理器, Jdbc单数据源事务 -->
+	<bean id="defaultTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 使用annotation定义事务 -->
+	<tx:annotation-driven transaction-manager="defaultTransactionManager" proxy-target-class="true" />
+	
+	<!-- <aop:aspectj-autoproxy/> -->
+	
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<!-- 这里支持多种寻址方式：classpath和file -->
+				<value>classpath*:application.properties</value>
+				<!-- 推荐使用file的方式引入，这样可以将配置和代码分离 -->
+				<!-- <value>file:/opt/demo/config/demo-remote.properties</value> -->
+			</list>
+		</property>
+	</bean>
+	
+
+    <bean id="dataSourceLog4jdbcAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+       <property name="beanNames">
+           <list>
+              <value>dataSource</value>
+           </list>
+       </property>
+    </bean>
+    <!-- 上传文件resolver -->
+    <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+     <!-- 文件大小 -->
+        <property name="maxUploadSize" value="20971520" />
+</bean>
+<import resource="spring-shiro.xml"/>
+
+</beans>

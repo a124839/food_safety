@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.plus.UserMapperPlus" >
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <select id="selectUserListByConditions" parameterType="com.ichinait.food.dto.user.UserDTO" resultType="com.ichinait.food.db.entity.plus.UserPlus">
+  	select 
+		  	u.id,
+		  	u.login_account as loginAccount,
+		  	u.user_name as userName,
+            ifnull(u.tutor,'') tutor,
+            ifnull(u.contact,'') contact,
+              ifnull(u.birthday,'') birthday,
+              ifnull(u.stu_code,'') stuCode,
+              ifnull(u.research_direction,'') researchDirection,
+              ifnull(u.graduated_school,'') graduatedSchool,
+		  	IFNULL(r.role_name,'') as roleName,
+		  	r.id as roleId,
+		  	u.status,
+		  	u.ct as createTime
+  		 from t_user u 
+  		 left join t_user_role_mapping urm on urm.user_id = u.id
+  		 left join t_role r on urm.role_id = r.id
+  		 <where > 
+  		 	<if test="status == 0">
+                u.status != 0
+            </if>
+             <if test="status !=0">
+                 u.status = #{status}
+             </if>
+		   <if test="userName != null" >
+		     and u.user_name = #{userName}
+		    </if>
+		      <if test="roleId != null" >
+		     and r.id = #{roleId}
+		    </if>
+		    </where>
+   order by u.ct
+  
+  </select>
+</mapper>

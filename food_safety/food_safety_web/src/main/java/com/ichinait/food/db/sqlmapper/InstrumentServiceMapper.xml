@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.InstrumentServiceMapper" >
+  <resultMap id="BaseResultMap" type="com.ichinait.food.db.entity.InstrumentService" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="instrument_id" property="instrumentId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="service_date" property="serviceDate" jdbcType="TIMESTAMP" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="ct" property="ct" jdbcType="TIMESTAMP" />
+    <result column="ut" property="ut" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, instrument_id, type, service_date, memo, operator, ct, ut
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ichinait.food.db.entity.InstrumentServiceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_instrument_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_instrument_service
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_instrument_service
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ichinait.food.db.entity.InstrumentServiceExample" >
+    delete from t_instrument_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ichinait.food.db.entity.InstrumentService" >
+    insert into t_instrument_service (id, instrument_id, type, 
+      service_date, memo, operator, 
+      ct, ut,status)
+    values (#{id,jdbcType=VARCHAR}, #{instrumentId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{serviceDate,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+      #{ct,jdbcType=TIMESTAMP}, #{ut,jdbcType=TIMESTAMP},#{status})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ichinait.food.db.entity.InstrumentService" >
+    insert into t_instrument_service
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="instrumentId != null" >
+        instrument_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="serviceDate != null" >
+        service_date,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="ct != null" >
+        ct,
+      </if>
+      <if test="ut != null" >
+        ut,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="instrumentId != null" >
+        #{instrumentId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceDate != null" >
+        #{serviceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null" >
+        #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        #{ut,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ichinait.food.db.entity.InstrumentServiceExample" resultType="java.lang.Integer" >
+    select count(*) from t_instrument_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_instrument_service
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.instrumentId != null" >
+        instrument_id = #{record.instrumentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceDate != null" >
+        service_date = #{record.serviceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ct != null" >
+        ct = #{record.ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ut != null" >
+        ut = #{record.ut,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_instrument_service
+    set id = #{record.id,jdbcType=VARCHAR},
+      instrument_id = #{record.instrumentId,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      service_date = #{record.serviceDate,jdbcType=TIMESTAMP},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      ct = #{record.ct,jdbcType=TIMESTAMP},
+      ut = #{record.ut,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ichinait.food.db.entity.InstrumentService" >
+    update t_instrument_service
+    <set >
+      <if test="instrumentId != null" >
+        instrument_id = #{instrumentId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceDate != null" >
+        service_date = #{serviceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null" >
+        ct = #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        ut = #{ut,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ichinait.food.db.entity.InstrumentService" >
+    update t_instrument_service
+    set instrument_id = #{instrumentId,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      service_date = #{serviceDate,jdbcType=TIMESTAMP},
+      memo = #{memo,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      ct = #{ct,jdbcType=TIMESTAMP},
+      ut = #{ut,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

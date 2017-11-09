@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.plus.TypeMapperPlus" >
+
+
+<select id="selectTypeList" resultType="com.ichinait.food.db.entity.plus.TypePlus">
+	SELECT
+	t2.id,
+	t1.name as categoryLv1Name,
+	ifnull(t2.code,"") as code,
+	t2.name as categoryLv2Name,
+	t2.memo,
+	u.user_name as operator,
+	t2.ct
+	from t_type t1
+	join t_type t2 on t1.id = t2.parent_id
+	join t_user u on u.id = t2.operator
+	<where>
+		t2.status = 1
+		<if test="categoryLv1Id != null and categoryLv1Id != ''">
+			and t1.id = #{categoryLv1Id}
+		</if>
+		<if test="categoryLv2Id != null and categoryLv2Id != ''">
+			and t2.id = #{categoryLv2Id}
+		</if>
+	</where>
+
+	order by t1.ct desc
+</select>
+
+
+	<select id="selectServiceType" resultType="com.ichinait.food.db.entity.Type" parameterType="java.lang.String">
+		select
+		t.id,
+		t.name,
+		t.ct,
+		t.memo,
+		u.user_name as operator
+		 from t_type t join t_user u on u.id = t.operator
+		where t.type = 2 and t.`status` = 1 and t.parent_id = 0
+		<if test="id != null and id != ''">
+			and t.id = #{id}
+		</if>
+      order by t.ct desc
+	</select>
+
+	<select id="selectFirstTypeByConditions" resultType="com.ichinait.food.db.entity.Type">
+		select t.id,t.`name`,t.memo,t.ct,u.user_name as operator
+		from t_type t
+		join t_user u on u.id = t.operator
+		where t.status = 1 and parent_id ='0' and type =1
+	 <if test="id != null and id != ''">
+		 and t.id = #{id}
+	 </if>
+
+	</select>
+	
+	
+</mapper>

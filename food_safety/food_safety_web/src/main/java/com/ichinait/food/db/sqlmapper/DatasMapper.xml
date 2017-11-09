@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.DatasMapper" >
+  <resultMap id="BaseResultMap" type="com.ichinait.food.db.entity.Datas" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="instrument_id" property="instrumentId" jdbcType="VARCHAR" />
+    <result column="sample_id" property="sampleId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="attachment_id" property="attachmentId" jdbcType="VARCHAR" />
+    <result column="resolution" property="resolution" jdbcType="VARCHAR" />
+    <result column="wavelength_range" property="wavelengthRange" jdbcType="VARCHAR" />
+    <result column="scanning_times" property="scanningTimes" jdbcType="INTEGER" />
+    <result column="scanning_duration" property="scanningDuration" jdbcType="VARCHAR" />
+    <result column="ct" property="ct" jdbcType="TIMESTAMP" />
+    <result column="ut" property="ut" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ichinait.food.db.entity.Datas" extends="BaseResultMap" >
+    <result column="data" property="data" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, instrument_id, sample_id, project_id, attachment_id, resolution, wavelength_range, 
+    scanning_times, scanning_duration, ct, ut
+  </sql>
+  <sql id="Blob_Column_List" >
+    data
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.ichinait.food.db.entity.DatasExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_datas
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ichinait.food.db.entity.DatasExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_datas
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_datas
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_datas
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ichinait.food.db.entity.DatasExample" >
+    delete from t_datas
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ichinait.food.db.entity.Datas" >
+    insert into t_datas (id, instrument_id, sample_id, 
+      project_id, attachment_id, resolution, 
+      wavelength_range, scanning_times, scanning_duration, 
+      ct, ut, data
+      )
+    values (#{id,jdbcType=VARCHAR}, #{instrumentId,jdbcType=VARCHAR}, #{sampleId,jdbcType=VARCHAR}, 
+      #{projectId,jdbcType=VARCHAR}, #{attachmentId,jdbcType=VARCHAR}, #{resolution,jdbcType=VARCHAR}, 
+      #{wavelengthRange,jdbcType=VARCHAR}, #{scanningTimes,jdbcType=INTEGER}, #{scanningDuration,jdbcType=VARCHAR}, 
+      #{ct,jdbcType=TIMESTAMP}, #{ut,jdbcType=TIMESTAMP}, #{data,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ichinait.food.db.entity.Datas" >
+    insert into t_datas
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="instrumentId != null" >
+        instrument_id,
+      </if>
+      <if test="sampleId != null" >
+        sample_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="attachmentId != null" >
+        attachment_id,
+      </if>
+      <if test="resolution != null" >
+        resolution,
+      </if>
+      <if test="wavelengthRange != null" >
+        wavelength_range,
+      </if>
+      <if test="scanningTimes != null" >
+        scanning_times,
+      </if>
+      <if test="scanningDuration != null" >
+        scanning_duration,
+      </if>
+      <if test="ct != null" >
+        ct,
+      </if>
+      <if test="ut != null" >
+        ut,
+      </if>
+      <if test="data != null" >
+        data,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="instrumentId != null" >
+        #{instrumentId,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleId != null" >
+        #{sampleId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentId != null" >
+        #{attachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="resolution != null" >
+        #{resolution,jdbcType=VARCHAR},
+      </if>
+      <if test="wavelengthRange != null" >
+        #{wavelengthRange,jdbcType=VARCHAR},
+      </if>
+      <if test="scanningTimes != null" >
+        #{scanningTimes,jdbcType=INTEGER},
+      </if>
+      <if test="scanningDuration != null" >
+        #{scanningDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null" >
+        #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        #{ut,jdbcType=TIMESTAMP},
+      </if>
+      <if test="data != null" >
+        #{data,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ichinait.food.db.entity.DatasExample" resultType="java.lang.Integer" >
+    select count(*) from t_datas
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_datas
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.instrumentId != null" >
+        instrument_id = #{record.instrumentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sampleId != null" >
+        sample_id = #{record.sampleId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attachmentId != null" >
+        attachment_id = #{record.attachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resolution != null" >
+        resolution = #{record.resolution,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wavelengthRange != null" >
+        wavelength_range = #{record.wavelengthRange,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scanningTimes != null" >
+        scanning_times = #{record.scanningTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.scanningDuration != null" >
+        scanning_duration = #{record.scanningDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ct != null" >
+        ct = #{record.ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ut != null" >
+        ut = #{record.ut,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.data != null" >
+        data = #{record.data,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update t_datas
+    set id = #{record.id,jdbcType=VARCHAR},
+      instrument_id = #{record.instrumentId,jdbcType=VARCHAR},
+      sample_id = #{record.sampleId,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=VARCHAR},
+      attachment_id = #{record.attachmentId,jdbcType=VARCHAR},
+      resolution = #{record.resolution,jdbcType=VARCHAR},
+      wavelength_range = #{record.wavelengthRange,jdbcType=VARCHAR},
+      scanning_times = #{record.scanningTimes,jdbcType=INTEGER},
+      scanning_duration = #{record.scanningDuration,jdbcType=VARCHAR},
+      ct = #{record.ct,jdbcType=TIMESTAMP},
+      ut = #{record.ut,jdbcType=TIMESTAMP},
+      data = #{record.data,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_datas
+    set id = #{record.id,jdbcType=VARCHAR},
+      instrument_id = #{record.instrumentId,jdbcType=VARCHAR},
+      sample_id = #{record.sampleId,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=VARCHAR},
+      attachment_id = #{record.attachmentId,jdbcType=VARCHAR},
+      resolution = #{record.resolution,jdbcType=VARCHAR},
+      wavelength_range = #{record.wavelengthRange,jdbcType=VARCHAR},
+      scanning_times = #{record.scanningTimes,jdbcType=INTEGER},
+      scanning_duration = #{record.scanningDuration,jdbcType=VARCHAR},
+      ct = #{record.ct,jdbcType=TIMESTAMP},
+      ut = #{record.ut,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ichinait.food.db.entity.Datas" >
+    update t_datas
+    <set >
+      <if test="instrumentId != null" >
+        instrument_id = #{instrumentId,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleId != null" >
+        sample_id = #{sampleId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentId != null" >
+        attachment_id = #{attachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="resolution != null" >
+        resolution = #{resolution,jdbcType=VARCHAR},
+      </if>
+      <if test="wavelengthRange != null" >
+        wavelength_range = #{wavelengthRange,jdbcType=VARCHAR},
+      </if>
+      <if test="scanningTimes != null" >
+        scanning_times = #{scanningTimes,jdbcType=INTEGER},
+      </if>
+      <if test="scanningDuration != null" >
+        scanning_duration = #{scanningDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null" >
+        ct = #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        ut = #{ut,jdbcType=TIMESTAMP},
+      </if>
+      <if test="data != null" >
+        data = #{data,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ichinait.food.db.entity.Datas" >
+    update t_datas
+    set instrument_id = #{instrumentId,jdbcType=VARCHAR},
+      sample_id = #{sampleId,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR},
+      attachment_id = #{attachmentId,jdbcType=VARCHAR},
+      resolution = #{resolution,jdbcType=VARCHAR},
+      wavelength_range = #{wavelengthRange,jdbcType=VARCHAR},
+      scanning_times = #{scanningTimes,jdbcType=INTEGER},
+      scanning_duration = #{scanningDuration,jdbcType=VARCHAR},
+      ct = #{ct,jdbcType=TIMESTAMP},
+      ut = #{ut,jdbcType=TIMESTAMP},
+      data = #{data,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ichinait.food.db.entity.Datas" >
+    update t_datas
+    set instrument_id = #{instrumentId,jdbcType=VARCHAR},
+      sample_id = #{sampleId,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR},
+      attachment_id = #{attachmentId,jdbcType=VARCHAR},
+      resolution = #{resolution,jdbcType=VARCHAR},
+      wavelength_range = #{wavelengthRange,jdbcType=VARCHAR},
+      scanning_times = #{scanningTimes,jdbcType=INTEGER},
+      scanning_duration = #{scanningDuration,jdbcType=VARCHAR},
+      ct = #{ct,jdbcType=TIMESTAMP},
+      ut = #{ut,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

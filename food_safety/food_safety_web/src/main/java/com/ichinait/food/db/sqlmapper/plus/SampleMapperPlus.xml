@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.plus.SampleMapperPlus" >
+<select id="selectSampleByConditions" resultType="com.ichinait.food.db.entity.Sample">
+	SELECT s.id,
+	name,
+	code,
+	producing_area as producingArea,
+	manufactor,
+	production_date as productionDate,
+	batches,
+	u.user_name as operator,
+	s.status FROM `t_sample`s join t_user u on u.id = s.operator
+	<where>
+		s.status = 1
+		<if test="producingArea != null and producingArea != ''">
+			and  producing_area like concat('%',#{producingArea},'%')
+		</if>
+		<if test="sampleName != null and sampleName != ''">
+			and name like concat('%',#{sampleName},'%')
+		</if>
+		<if test="manufactor != null and manufactor != ''">
+			and manufactor like concat('%',#{manufactor},'%')
+		</if>
+		
+	</where>
+	order by s.ct desc
+</select>
+
+<select id="selectSampleById" resultType="com.ichinait.food.db.entity.plus.SamplePlus">
+select s.id,
+s.code,
+s.name,
+s.producing_area as producingArea,
+s.production_date as productionDate,
+s.manufactor,
+s.batches,
+s.memo,
+s.operator,
+t1.`name`as categoryLv1Name,
+t2.`name` as categoryLv2Name,
+t1.id as categoryLv1Id,
+t2.id as categoryLv2Id
+ from t_sample s join t_type t1 on s.category_lv1_id = t1.id
+join t_type t2 on t2.id = s.category_lv2_id
+where s.id = #{id}
+</select>
+
+</mapper>

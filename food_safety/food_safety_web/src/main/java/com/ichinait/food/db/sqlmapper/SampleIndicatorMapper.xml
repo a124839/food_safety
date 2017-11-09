@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.SampleIndicatorMapper" >
+  <resultMap id="BaseResultMap" type="com.ichinait.food.db.entity.SampleIndicator" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sample_id" property="sampleId" jdbcType="VARCHAR" />
+    <result column="indicator_name" property="indicatorName" jdbcType="VARCHAR" />
+    <result column="indicator_value" property="indicatorValue" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sample_id, indicator_name, indicator_value
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ichinait.food.db.entity.SampleIndicatorExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_sample_indicator
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sample_indicator
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sample_indicator
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ichinait.food.db.entity.SampleIndicatorExample" >
+    delete from t_sample_indicator
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ichinait.food.db.entity.SampleIndicator" >
+    insert into t_sample_indicator (id, sample_id, indicator_name, 
+      indicator_value)
+    values (#{id,jdbcType=VARCHAR}, #{sampleId,jdbcType=VARCHAR}, #{indicatorName,jdbcType=VARCHAR}, 
+      #{indicatorValue,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ichinait.food.db.entity.SampleIndicator" >
+    insert into t_sample_indicator
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sampleId != null" >
+        sample_id,
+      </if>
+      <if test="indicatorName != null" >
+        indicator_name,
+      </if>
+      <if test="indicatorValue != null" >
+        indicator_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleId != null" >
+        #{sampleId,jdbcType=VARCHAR},
+      </if>
+      <if test="indicatorName != null" >
+        #{indicatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="indicatorValue != null" >
+        #{indicatorValue,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ichinait.food.db.entity.SampleIndicatorExample" resultType="java.lang.Integer" >
+    select count(*) from t_sample_indicator
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_sample_indicator
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sampleId != null" >
+        sample_id = #{record.sampleId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.indicatorName != null" >
+        indicator_name = #{record.indicatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.indicatorValue != null" >
+        indicator_value = #{record.indicatorValue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_sample_indicator
+    set id = #{record.id,jdbcType=VARCHAR},
+      sample_id = #{record.sampleId,jdbcType=VARCHAR},
+      indicator_name = #{record.indicatorName,jdbcType=VARCHAR},
+      indicator_value = #{record.indicatorValue,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ichinait.food.db.entity.SampleIndicator" >
+    update t_sample_indicator
+    <set >
+      <if test="sampleId != null" >
+        sample_id = #{sampleId,jdbcType=VARCHAR},
+      </if>
+      <if test="indicatorName != null" >
+        indicator_name = #{indicatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="indicatorValue != null" >
+        indicator_value = #{indicatorValue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ichinait.food.db.entity.SampleIndicator" >
+    update t_sample_indicator
+    set sample_id = #{sampleId,jdbcType=VARCHAR},
+      indicator_name = #{indicatorName,jdbcType=VARCHAR},
+      indicator_value = #{indicatorValue,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

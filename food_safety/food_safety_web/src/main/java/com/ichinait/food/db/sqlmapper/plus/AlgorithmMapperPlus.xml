@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.plus.AlgorithmMapperPlus" >
+  <select id="selectAlgorithmByCondition" resultType="com.ichinait.food.db.entity.Algorithm">
+    select
+      a.id,
+      a.`name`,
+      a.ct,
+      a.memo,
+      a.type,
+      a.category,
+      a.ct,
+      a.`status`,
+      a.attachment_id as attachmentId,
+      u.user_name as operator
+     from t_algorithm a join t_user u on u.id = a.operator
+      <where>
+        a.status != 0
+        <if test="algorithmName != null and algorithmName != ''">
+          and a.name like concat('%',#{algorithmName},'%')
+        </if>
+
+      </where>
+  </select>
+</mapper>

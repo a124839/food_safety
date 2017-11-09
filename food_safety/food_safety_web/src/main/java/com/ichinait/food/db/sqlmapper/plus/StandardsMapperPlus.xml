@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.plus.StandardsMapperPlus" >
+
+
+  <select id="selectStandardsByConditions" resultType="com.ichinait.food.db.entity.Standards">
+  select
+  s.name,
+  s.target,
+  s.code,
+    s.id,
+    ifnull(s.issuance_department,'') as issuanceDepartment,
+    s.memo,
+    s.summary,
+    s.release_time as releaseTime,
+    s.type,
+      s.status,
+      s.attachment_id as attachmentId,
+      s.period,
+    u.user_name as operator
+  from t_standards s join t_user u on u.id = s.operator
+  <where>
+      <if test="name != null and name != ''">
+          and name like concat('%',#{name},'%')
+      </if>
+      <if test="target != null and target != ''">
+          and target like concat('%',#{target},'%')
+      </if>
+      <if test="type != 0">
+          and type = #{type}
+      </if>
+      <if test="status != 0">
+          and s.status = #{status}
+      </if>
+  </where>
+  </select>
+
+    <!-- addBy xiao 2016-04-12 定时清理已过期的标准文件 -->
+    <update id="updateStandardsExpiredThread">
+        UPDATE t_standards s1,
+        (SELECT id	FROM t_standards WHERE TIMESTAMPDIFF(DAY, UTC_DATE(), DATE_ADD(release_time, INTERVAL period YEAR)) = 0) s2
+        SET s1.status  = 2, s1.ut = NOW()
+        WHERE
+            s1.id = s2.id
+    </update>
+
+</mapper>

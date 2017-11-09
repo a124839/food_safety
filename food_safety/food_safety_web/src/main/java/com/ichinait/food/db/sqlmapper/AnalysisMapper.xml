@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.AnalysisMapper" >
+  <resultMap id="BaseResultMap" type="com.ichinait.food.db.entity.Analysis" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="algorithm_info" property="algorithmInfo" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="ct" property="ct" jdbcType="TIMESTAMP" />
+    <result column="ut" property="ut" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ichinait.food.db.entity.Analysis" extends="BaseResultMap" >
+    <result column="datas_info" property="datasInfo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_id, algorithm_info, operator, ct, ut
+  </sql>
+  <sql id="Blob_Column_List" >
+    datas_info
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.ichinait.food.db.entity.AnalysisExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_analysis
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ichinait.food.db.entity.AnalysisExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_analysis
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_analysis
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_analysis
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ichinait.food.db.entity.AnalysisExample" >
+    delete from t_analysis
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ichinait.food.db.entity.Analysis" >
+    insert into t_analysis (id, project_id, algorithm_info, 
+      operator, ct, ut, 
+      datas_info)
+    values (#{id,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{algorithmInfo,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=VARCHAR}, #{ct,jdbcType=TIMESTAMP}, #{ut,jdbcType=TIMESTAMP}, 
+      #{datasInfo,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ichinait.food.db.entity.Analysis" >
+    insert into t_analysis
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="algorithmInfo != null" >
+        algorithm_info,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="ct != null" >
+        ct,
+      </if>
+      <if test="ut != null" >
+        ut,
+      </if>
+      <if test="datasInfo != null" >
+        datas_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="algorithmInfo != null" >
+        #{algorithmInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null" >
+        #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        #{ut,jdbcType=TIMESTAMP},
+      </if>
+      <if test="datasInfo != null" >
+        #{datasInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ichinait.food.db.entity.AnalysisExample" resultType="java.lang.Integer" >
+    select count(*) from t_analysis
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_analysis
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.algorithmInfo != null" >
+        algorithm_info = #{record.algorithmInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ct != null" >
+        ct = #{record.ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ut != null" >
+        ut = #{record.ut,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.datasInfo != null" >
+        datas_info = #{record.datasInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update t_analysis
+    set id = #{record.id,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=VARCHAR},
+      algorithm_info = #{record.algorithmInfo,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      ct = #{record.ct,jdbcType=TIMESTAMP},
+      ut = #{record.ut,jdbcType=TIMESTAMP},
+      datas_info = #{record.datasInfo,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_analysis
+    set id = #{record.id,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=VARCHAR},
+      algorithm_info = #{record.algorithmInfo,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      ct = #{record.ct,jdbcType=TIMESTAMP},
+      ut = #{record.ut,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ichinait.food.db.entity.Analysis" >
+    update t_analysis
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="algorithmInfo != null" >
+        algorithm_info = #{algorithmInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null" >
+        ct = #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        ut = #{ut,jdbcType=TIMESTAMP},
+      </if>
+      <if test="datasInfo != null" >
+        datas_info = #{datasInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ichinait.food.db.entity.Analysis" >
+    update t_analysis
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      algorithm_info = #{algorithmInfo,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      ct = #{ct,jdbcType=TIMESTAMP},
+      ut = #{ut,jdbcType=TIMESTAMP},
+      datas_info = #{datasInfo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ichinait.food.db.entity.Analysis" >
+    update t_analysis
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      algorithm_info = #{algorithmInfo,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      ct = #{ct,jdbcType=TIMESTAMP},
+      ut = #{ut,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

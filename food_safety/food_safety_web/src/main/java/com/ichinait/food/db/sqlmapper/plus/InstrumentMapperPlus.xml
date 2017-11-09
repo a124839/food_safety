@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.plus.InstrumentMapperPlus" >
+
+
+  <select id="selectInstrumentByConditions" resultType="com.ichinait.food.db.entity.Instrument">
+      select
+      i.sn,
+      i.id,
+      i.code,
+      i.`name`,
+      i.type,
+      i.model,
+      i.manufactor,
+      i.memo,
+      i.price,
+      i.production_date as productionDate,
+      i.purchase_date as purchaseDate,
+      i.install_start_date as installStartDate,
+      i.install_end_date as installEndDate,
+      i.`status`,
+      i.attachment_id as attachmentId,
+      u.user_name as operator,
+      i.category
+     from t_instrument i join t_user u on u.id = i.operator
+     <where>
+       i.status = 1
+       <if test="instrumentName != null and instrumentName != ''">
+        and  i.name like concat('%',#{instrumentName},'%')
+       </if>
+       <if test="manufactor != null and manufactor != ''">
+         and  i.manufactor like concat('%',#{manufactor},'%')
+       </if>
+       <if test="model != null and model != ''">
+         and  i.model like concat('%',#{model},'%')
+       </if>
+       <if test="category != null and category != ''">
+         and  i.category =#{category}
+       </if>
+     </where>
+
+  </select>
+</mapper>

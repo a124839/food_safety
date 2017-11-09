@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.InstrumentMapper" >
+  <resultMap id="BaseResultMap" type="com.ichinait.food.db.entity.Instrument" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="model" property="model" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="sn" property="sn" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="production_date" property="productionDate" jdbcType="DATE" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="purchase_date" property="purchaseDate" jdbcType="DATE" />
+    <result column="install_end_date" property="installEndDate" jdbcType="DATE" />
+    <result column="install_start_date" property="installStartDate" jdbcType="DATE" />
+    <result column="y" property="y" jdbcType="VARCHAR" />
+    <result column="x" property="x" jdbcType="VARCHAR" />
+    <result column="manufactor" property="manufactor" jdbcType="VARCHAR" />
+    <result column="attachment_id" property="attachmentId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="ct" property="ct" jdbcType="TIMESTAMP" />
+    <result column="ut" property="ut" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ichinait.food.db.entity.InstrumentWithBLOBs" extends="BaseResultMap" >
+    <result column="performances" property="performances" jdbcType="LONGVARCHAR" />
+    <result column="memo" property="memo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, model, category, type, sn, code, production_date, price, purchase_date, 
+    install_end_date, install_start_date, y, x, manufactor, attachment_id, status, operator, 
+    ct, ut
+  </sql>
+  <sql id="Blob_Column_List" >
+    performances, memo
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.ichinait.food.db.entity.InstrumentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_instrument
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ichinait.food.db.entity.InstrumentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_instrument
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_instrument
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_instrument
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ichinait.food.db.entity.InstrumentExample" >
+    delete from t_instrument
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ichinait.food.db.entity.InstrumentWithBLOBs" >
+    insert into t_instrument (id, name, model, 
+      category, type, sn, 
+      code, production_date, price, 
+      purchase_date, install_end_date, install_start_date, 
+      y, x, manufactor, attachment_id, 
+      status, operator, ct, 
+      ut, performances, memo
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
+      #{category,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{sn,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, #{productionDate,jdbcType=DATE}, #{price,jdbcType=VARCHAR}, 
+      #{purchaseDate,jdbcType=DATE}, #{installEndDate,jdbcType=DATE}, #{installStartDate,jdbcType=DATE}, 
+      #{y,jdbcType=VARCHAR}, #{x,jdbcType=VARCHAR}, #{manufactor,jdbcType=VARCHAR}, #{attachmentId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{operator,jdbcType=VARCHAR}, #{ct,jdbcType=TIMESTAMP}, 
+      #{ut,jdbcType=TIMESTAMP}, #{performances,jdbcType=LONGVARCHAR}, #{memo,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ichinait.food.db.entity.InstrumentWithBLOBs" >
+    insert into t_instrument
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="model != null" >
+        model,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="sn != null" >
+        sn,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="productionDate != null" >
+        production_date,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="purchaseDate != null" >
+        purchase_date,
+      </if>
+      <if test="installEndDate != null" >
+        install_end_date,
+      </if>
+      <if test="installStartDate != null" >
+        install_start_date,
+      </if>
+      <if test="y != null" >
+        y,
+      </if>
+      <if test="x != null" >
+        x,
+      </if>
+      <if test="manufactor != null" >
+        manufactor,
+      </if>
+      <if test="attachmentId != null" >
+        attachment_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="ct != null" >
+        ct,
+      </if>
+      <if test="ut != null" >
+        ut,
+      </if>
+      <if test="performances != null" >
+        performances,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="sn != null" >
+        #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="productionDate != null" >
+        #{productionDate,jdbcType=DATE},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDate != null" >
+        #{purchaseDate,jdbcType=DATE},
+      </if>
+      <if test="installEndDate != null" >
+        #{installEndDate,jdbcType=DATE},
+      </if>
+      <if test="installStartDate != null" >
+        #{installStartDate,jdbcType=DATE},
+      </if>
+      <if test="y != null" >
+        #{y,jdbcType=VARCHAR},
+      </if>
+      <if test="x != null" >
+        #{x,jdbcType=VARCHAR},
+      </if>
+      <if test="manufactor != null" >
+        #{manufactor,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentId != null" >
+        #{attachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null" >
+        #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        #{ut,jdbcType=TIMESTAMP},
+      </if>
+      <if test="performances != null" >
+        #{performances,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ichinait.food.db.entity.InstrumentExample" resultType="java.lang.Integer" >
+    select count(*) from t_instrument
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_instrument
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.model != null" >
+        model = #{record.model,jdbcType=VARCHAR},
+      </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sn != null" >
+        sn = #{record.sn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null" >
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productionDate != null" >
+        production_date = #{record.productionDate,jdbcType=DATE},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=VARCHAR},
+      </if>
+      <if test="record.purchaseDate != null" >
+        purchase_date = #{record.purchaseDate,jdbcType=DATE},
+      </if>
+      <if test="record.installEndDate != null" >
+        install_end_date = #{record.installEndDate,jdbcType=DATE},
+      </if>
+      <if test="record.installStartDate != null" >
+        install_start_date = #{record.installStartDate,jdbcType=DATE},
+      </if>
+      <if test="record.y != null" >
+        y = #{record.y,jdbcType=VARCHAR},
+      </if>
+      <if test="record.x != null" >
+        x = #{record.x,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manufactor != null" >
+        manufactor = #{record.manufactor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attachmentId != null" >
+        attachment_id = #{record.attachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ct != null" >
+        ct = #{record.ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ut != null" >
+        ut = #{record.ut,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.performances != null" >
+        performances = #{record.performances,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update t_instrument
+    set id = #{record.id,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      model = #{record.model,jdbcType=VARCHAR},
+      category = #{record.category,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      sn = #{record.sn,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      production_date = #{record.productionDate,jdbcType=DATE},
+      price = #{record.price,jdbcType=VARCHAR},
+      purchase_date = #{record.purchaseDate,jdbcType=DATE},
+      install_end_date = #{record.installEndDate,jdbcType=DATE},
+      install_start_date = #{record.installStartDate,jdbcType=DATE},
+      y = #{record.y,jdbcType=VARCHAR},
+      x = #{record.x,jdbcType=VARCHAR},
+      manufactor = #{record.manufactor,jdbcType=VARCHAR},
+      attachment_id = #{record.attachmentId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      ct = #{record.ct,jdbcType=TIMESTAMP},
+      ut = #{record.ut,jdbcType=TIMESTAMP},
+      performances = #{record.performances,jdbcType=LONGVARCHAR},
+      memo = #{record.memo,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_instrument
+    set id = #{record.id,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      model = #{record.model,jdbcType=VARCHAR},
+      category = #{record.category,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      sn = #{record.sn,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      production_date = #{record.productionDate,jdbcType=DATE},
+      price = #{record.price,jdbcType=VARCHAR},
+      purchase_date = #{record.purchaseDate,jdbcType=DATE},
+      install_end_date = #{record.installEndDate,jdbcType=DATE},
+      install_start_date = #{record.installStartDate,jdbcType=DATE},
+      y = #{record.y,jdbcType=VARCHAR},
+      x = #{record.x,jdbcType=VARCHAR},
+      manufactor = #{record.manufactor,jdbcType=VARCHAR},
+      attachment_id = #{record.attachmentId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      ct = #{record.ct,jdbcType=TIMESTAMP},
+      ut = #{record.ut,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ichinait.food.db.entity.InstrumentWithBLOBs" >
+    update t_instrument
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="sn != null" >
+        sn = #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="productionDate != null" >
+        production_date = #{productionDate,jdbcType=DATE},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDate != null" >
+        purchase_date = #{purchaseDate,jdbcType=DATE},
+      </if>
+      <if test="installEndDate != null" >
+        install_end_date = #{installEndDate,jdbcType=DATE},
+      </if>
+      <if test="installStartDate != null" >
+        install_start_date = #{installStartDate,jdbcType=DATE},
+      </if>
+      <if test="y != null" >
+        y = #{y,jdbcType=VARCHAR},
+      </if>
+      <if test="x != null" >
+        x = #{x,jdbcType=VARCHAR},
+      </if>
+      <if test="manufactor != null" >
+        manufactor = #{manufactor,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentId != null" >
+        attachment_id = #{attachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null" >
+        ct = #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        ut = #{ut,jdbcType=TIMESTAMP},
+      </if>
+      <if test="performances != null" >
+        performances = #{performances,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ichinait.food.db.entity.InstrumentWithBLOBs" >
+    update t_instrument
+    set name = #{name,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      sn = #{sn,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      production_date = #{productionDate,jdbcType=DATE},
+      price = #{price,jdbcType=VARCHAR},
+      purchase_date = #{purchaseDate,jdbcType=DATE},
+      install_end_date = #{installEndDate,jdbcType=DATE},
+      install_start_date = #{installStartDate,jdbcType=DATE},
+      y = #{y,jdbcType=VARCHAR},
+      x = #{x,jdbcType=VARCHAR},
+      manufactor = #{manufactor,jdbcType=VARCHAR},
+      attachment_id = #{attachmentId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      operator = #{operator,jdbcType=VARCHAR},
+      ct = #{ct,jdbcType=TIMESTAMP},
+      ut = #{ut,jdbcType=TIMESTAMP},
+      performances = #{performances,jdbcType=LONGVARCHAR},
+      memo = #{memo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ichinait.food.db.entity.Instrument" >
+    update t_instrument
+    set name = #{name,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      sn = #{sn,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      production_date = #{productionDate,jdbcType=DATE},
+      price = #{price,jdbcType=VARCHAR},
+      purchase_date = #{purchaseDate,jdbcType=DATE},
+      install_end_date = #{installEndDate,jdbcType=DATE},
+      install_start_date = #{installStartDate,jdbcType=DATE},
+      y = #{y,jdbcType=VARCHAR},
+      x = #{x,jdbcType=VARCHAR},
+      manufactor = #{manufactor,jdbcType=VARCHAR},
+      attachment_id = #{attachmentId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      operator = #{operator,jdbcType=VARCHAR},
+      ct = #{ct,jdbcType=TIMESTAMP},
+      ut = #{ut,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

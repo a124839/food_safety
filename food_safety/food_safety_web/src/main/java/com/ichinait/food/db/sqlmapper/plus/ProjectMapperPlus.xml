@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.plus.ProjectMapperPlus" >
+
+
+  <select id="selectProjectByCondition" resultType="com.ichinait.food.db.entity.plus.ProjectPlus" >
+    select
+      p.id,
+      p.`name`,
+      p.start_date as startDate,
+      p.end_date as endDate,
+      p.`status`,
+      u.user_name as operator,
+      p.ct
+    from t_project p join t_user u on u.id = p.operator
+    <where>
+      p.status != 0
+      <if test="projectName != null and projectName != ''">
+        and p.name like concat('%', #{projectName},'%')
+      </if>
+      <if test="status != null">
+        and p.status = status
+      </if>
+    </where>
+  </select>
+
+
+  <select id="selectProjectByIdForExcel" parameterType="String" resultType="com.ichinait.food.db.entity.plus.ExcelProject">
+    SELECT
+        p.`name`,
+        u.user_name AS userName,
+        p.start_date AS startDate,
+        p.end_date AS endDate,
+        a.file_original_name AS schemaName,
+        a2.file_original_name AS standardName
+    FROM
+        t_project p
+    LEFT JOIN t_attachment a ON p.schema_attachment_id = a.id
+    LEFT JOIN t_attachment a2 ON p.standard_attachment_id = a2.id
+    JOIN t_user u ON p.operator = u.id
+    WHERE
+        p.id = #{id}
+  </select>
+</mapper>

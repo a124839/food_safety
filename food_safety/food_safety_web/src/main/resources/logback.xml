@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<jmxConfigurator />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- 典型的日志pattern -->
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 演示按时间滚动的策略 -->
+	<appender name="defaultLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<file>/home/server/logs/food_safety.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			 <!--<fileNamePattern>/home/sebastian/logs/food_safety/food_safety.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+			<fileNamePattern>/home/server/logs/food_safety-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- 保留 30天数据，默认无限-->
+			<maxHistory>60</maxHistory>
+		</rollingPolicy> 
+		<!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      		<maxFileSize>10MB</maxFileSize>
+      	</triggeringPolicy>-->
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!--log4jdbc -->
+	<logger name="com.ichinait.food" level="DEBUG" />
+	<logger name="jdbc.connection" level="OFF" />
+	<logger name="jdbc.audit" level="OFF" />
+	<logger name="jdbc.resultset" level="OFF" />
+	<logger name="jdbc.sqlonly" level="OFF" />
+	<logger name="jdbc.sqltiming" level="INFO" />
+	<!-- root level="INFO"-->
+ 
+	<root level="DEBUG">
+        <appender-ref ref="console" />
+        <appender-ref ref="defaultLogFile" />
+    </root>
+</configuration>

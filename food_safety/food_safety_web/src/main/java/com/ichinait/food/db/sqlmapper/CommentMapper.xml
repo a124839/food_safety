@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.ichinait.food.db.entity.Comment" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="jmyps" property="jmyps" jdbcType="VARCHAR" />
+    <result column="mxzcfs" property="mxzcfs" jdbcType="VARCHAR" />
+    <result column="rmscv" property="rmscv" jdbcType="VARCHAR" />
+    <result column="r_r" property="rR" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="analysis_id" property="analysisId" jdbcType="VARCHAR" />
+    <result column="modal_attachment_id" property="modalAttachmentId" jdbcType="VARCHAR" />
+    <result column="data_attachment_id" property="dataAttachmentId" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="ct" property="ct" jdbcType="TIMESTAMP" />
+    <result column="ut" property="ut" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, jmyps, mxzcfs, rmscv, r_r, memo, analysis_id, modal_attachment_id, data_attachment_id, 
+    operator, ct, ut
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ichinait.food.db.entity.CommentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_comment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_comment
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ichinait.food.db.entity.CommentExample" >
+    delete from t_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ichinait.food.db.entity.Comment" >
+    insert into t_comment (id, name, jmyps, 
+      mxzcfs, rmscv, r_r, 
+      memo, analysis_id, modal_attachment_id, 
+      data_attachment_id, operator, ct, 
+      ut)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{jmyps,jdbcType=VARCHAR}, 
+      #{mxzcfs,jdbcType=VARCHAR}, #{rmscv,jdbcType=VARCHAR}, #{rR,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, #{analysisId,jdbcType=VARCHAR}, #{modalAttachmentId,jdbcType=VARCHAR}, 
+      #{dataAttachmentId,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{ct,jdbcType=TIMESTAMP}, 
+      #{ut,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ichinait.food.db.entity.Comment" >
+    insert into t_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="jmyps != null" >
+        jmyps,
+      </if>
+      <if test="mxzcfs != null" >
+        mxzcfs,
+      </if>
+      <if test="rmscv != null" >
+        rmscv,
+      </if>
+      <if test="rR != null" >
+        r_r,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="analysisId != null" >
+        analysis_id,
+      </if>
+      <if test="modalAttachmentId != null" >
+        modal_attachment_id,
+      </if>
+      <if test="dataAttachmentId != null" >
+        data_attachment_id,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="ct != null" >
+        ct,
+      </if>
+      <if test="ut != null" >
+        ut,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="jmyps != null" >
+        #{jmyps,jdbcType=VARCHAR},
+      </if>
+      <if test="mxzcfs != null" >
+        #{mxzcfs,jdbcType=VARCHAR},
+      </if>
+      <if test="rmscv != null" >
+        #{rmscv,jdbcType=VARCHAR},
+      </if>
+      <if test="rR != null" >
+        #{rR,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="analysisId != null" >
+        #{analysisId,jdbcType=VARCHAR},
+      </if>
+      <if test="modalAttachmentId != null" >
+        #{modalAttachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="dataAttachmentId != null" >
+        #{dataAttachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null" >
+        #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        #{ut,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ichinait.food.db.entity.CommentExample" resultType="java.lang.Integer" >
+    select count(*) from t_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_comment
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jmyps != null" >
+        jmyps = #{record.jmyps,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mxzcfs != null" >
+        mxzcfs = #{record.mxzcfs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rmscv != null" >
+        rmscv = #{record.rmscv,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rR != null" >
+        r_r = #{record.rR,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.analysisId != null" >
+        analysis_id = #{record.analysisId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modalAttachmentId != null" >
+        modal_attachment_id = #{record.modalAttachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataAttachmentId != null" >
+        data_attachment_id = #{record.dataAttachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ct != null" >
+        ct = #{record.ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ut != null" >
+        ut = #{record.ut,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_comment
+    set id = #{record.id,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      jmyps = #{record.jmyps,jdbcType=VARCHAR},
+      mxzcfs = #{record.mxzcfs,jdbcType=VARCHAR},
+      rmscv = #{record.rmscv,jdbcType=VARCHAR},
+      r_r = #{record.rR,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      analysis_id = #{record.analysisId,jdbcType=VARCHAR},
+      modal_attachment_id = #{record.modalAttachmentId,jdbcType=VARCHAR},
+      data_attachment_id = #{record.dataAttachmentId,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      ct = #{record.ct,jdbcType=TIMESTAMP},
+      ut = #{record.ut,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ichinait.food.db.entity.Comment" >
+    update t_comment
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="jmyps != null" >
+        jmyps = #{jmyps,jdbcType=VARCHAR},
+      </if>
+      <if test="mxzcfs != null" >
+        mxzcfs = #{mxzcfs,jdbcType=VARCHAR},
+      </if>
+      <if test="rmscv != null" >
+        rmscv = #{rmscv,jdbcType=VARCHAR},
+      </if>
+      <if test="rR != null" >
+        r_r = #{rR,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="analysisId != null" >
+        analysis_id = #{analysisId,jdbcType=VARCHAR},
+      </if>
+      <if test="modalAttachmentId != null" >
+        modal_attachment_id = #{modalAttachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="dataAttachmentId != null" >
+        data_attachment_id = #{dataAttachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null" >
+        ct = #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        ut = #{ut,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ichinait.food.db.entity.Comment" >
+    update t_comment
+    set name = #{name,jdbcType=VARCHAR},
+      jmyps = #{jmyps,jdbcType=VARCHAR},
+      mxzcfs = #{mxzcfs,jdbcType=VARCHAR},
+      rmscv = #{rmscv,jdbcType=VARCHAR},
+      r_r = #{rR,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      analysis_id = #{analysisId,jdbcType=VARCHAR},
+      modal_attachment_id = #{modalAttachmentId,jdbcType=VARCHAR},
+      data_attachment_id = #{dataAttachmentId,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      ct = #{ct,jdbcType=TIMESTAMP},
+      ut = #{ut,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

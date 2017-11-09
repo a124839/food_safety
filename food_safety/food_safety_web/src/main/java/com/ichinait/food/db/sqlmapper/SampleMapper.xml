@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichinait.food.db.mapper.SampleMapper" >
+  <resultMap id="BaseResultMap" type="com.ichinait.food.db.entity.Sample" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="category_lv1_id" property="categoryLv1Id" jdbcType="VARCHAR" />
+    <result column="category_lv2_id" property="categoryLv2Id" jdbcType="VARCHAR" />
+    <result column="producing_area" property="producingArea" jdbcType="VARCHAR" />
+    <result column="production_date" property="productionDate" jdbcType="DATE" />
+    <result column="manufactor" property="manufactor" jdbcType="VARCHAR" />
+    <result column="batches" property="batches" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="ct" property="ct" jdbcType="TIMESTAMP" />
+    <result column="ut" property="ut" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, code, name, category_lv1_id, category_lv2_id, producing_area, production_date, 
+    manufactor, batches, memo, operator, status, ct, ut
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ichinait.food.db.entity.SampleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_sample
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sample
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sample
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ichinait.food.db.entity.SampleExample" >
+    delete from t_sample
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ichinait.food.db.entity.Sample" >
+    insert into t_sample (id, code, name, 
+      category_lv1_id, category_lv2_id, producing_area, 
+      production_date, manufactor, batches, 
+      memo, operator, status, 
+      ct, ut)
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{categoryLv1Id,jdbcType=VARCHAR}, #{categoryLv2Id,jdbcType=VARCHAR}, #{producingArea,jdbcType=VARCHAR}, 
+      #{productionDate,jdbcType=DATE}, #{manufactor,jdbcType=VARCHAR}, #{batches,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{ct,jdbcType=TIMESTAMP}, #{ut,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ichinait.food.db.entity.Sample" >
+    insert into t_sample
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="categoryLv1Id != null" >
+        category_lv1_id,
+      </if>
+      <if test="categoryLv2Id != null" >
+        category_lv2_id,
+      </if>
+      <if test="producingArea != null" >
+        producing_area,
+      </if>
+      <if test="productionDate != null" >
+        production_date,
+      </if>
+      <if test="manufactor != null" >
+        manufactor,
+      </if>
+      <if test="batches != null" >
+        batches,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="ct != null" >
+        ct,
+      </if>
+      <if test="ut != null" >
+        ut,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryLv1Id != null" >
+        #{categoryLv1Id,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryLv2Id != null" >
+        #{categoryLv2Id,jdbcType=VARCHAR},
+      </if>
+      <if test="producingArea != null" >
+        #{producingArea,jdbcType=VARCHAR},
+      </if>
+      <if test="productionDate != null" >
+        #{productionDate,jdbcType=DATE},
+      </if>
+      <if test="manufactor != null" >
+        #{manufactor,jdbcType=VARCHAR},
+      </if>
+      <if test="batches != null" >
+        #{batches,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="ct != null" >
+        #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        #{ut,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ichinait.food.db.entity.SampleExample" resultType="java.lang.Integer" >
+    select count(*) from t_sample
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_sample
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null" >
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryLv1Id != null" >
+        category_lv1_id = #{record.categoryLv1Id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryLv2Id != null" >
+        category_lv2_id = #{record.categoryLv2Id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.producingArea != null" >
+        producing_area = #{record.producingArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productionDate != null" >
+        production_date = #{record.productionDate,jdbcType=DATE},
+      </if>
+      <if test="record.manufactor != null" >
+        manufactor = #{record.manufactor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.batches != null" >
+        batches = #{record.batches,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.ct != null" >
+        ct = #{record.ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ut != null" >
+        ut = #{record.ut,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_sample
+    set id = #{record.id,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      category_lv1_id = #{record.categoryLv1Id,jdbcType=VARCHAR},
+      category_lv2_id = #{record.categoryLv2Id,jdbcType=VARCHAR},
+      producing_area = #{record.producingArea,jdbcType=VARCHAR},
+      production_date = #{record.productionDate,jdbcType=DATE},
+      manufactor = #{record.manufactor,jdbcType=VARCHAR},
+      batches = #{record.batches,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      ct = #{record.ct,jdbcType=TIMESTAMP},
+      ut = #{record.ut,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ichinait.food.db.entity.Sample" >
+    update t_sample
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryLv1Id != null" >
+        category_lv1_id = #{categoryLv1Id,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryLv2Id != null" >
+        category_lv2_id = #{categoryLv2Id,jdbcType=VARCHAR},
+      </if>
+      <if test="producingArea != null" >
+        producing_area = #{producingArea,jdbcType=VARCHAR},
+      </if>
+      <if test="productionDate != null" >
+        production_date = #{productionDate,jdbcType=DATE},
+      </if>
+      <if test="manufactor != null" >
+        manufactor = #{manufactor,jdbcType=VARCHAR},
+      </if>
+      <if test="batches != null" >
+        batches = #{batches,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="ct != null" >
+        ct = #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null" >
+        ut = #{ut,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ichinait.food.db.entity.Sample" >
+    update t_sample
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      category_lv1_id = #{categoryLv1Id,jdbcType=VARCHAR},
+      category_lv2_id = #{categoryLv2Id,jdbcType=VARCHAR},
+      producing_area = #{producingArea,jdbcType=VARCHAR},
+      production_date = #{productionDate,jdbcType=DATE},
+      manufactor = #{manufactor,jdbcType=VARCHAR},
+      batches = #{batches,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      ct = #{ct,jdbcType=TIMESTAMP},
+      ut = #{ut,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
