@@ -134,11 +134,12 @@ public class DataAnalysisController extends BaseController<Datas, DatasService> 
         System.out.println(pdsDTO);
         try {
         	ModelCalibrationResultDTO  mcrd = dataAnalysisService.pds(pdsDTO);
+        	request.setAttribute("PDS_Results", JsonMapper.nonEmptyMapper().toJson(mcrd));
+        	logger.debug("-----------" + JsonMapper.nonEmptyMapper().toJson(mcrd));
 		} catch (Exception e) {
 			logger.error(Throwables.getStackTraceAsString(e));
 			e.printStackTrace();
 		}
-        
         return "/dataAnalysis/dataAnalysisResult";  
     }
     
@@ -154,6 +155,7 @@ public class DataAnalysisController extends BaseController<Datas, DatasService> 
         System.out.println(sstDTO);
         try {
         	ModelCalibrationResultDTO  mcrd = dataAnalysisService.sst(sstDTO);
+        	request.setAttribute("SST_Results", JsonMapper.nonEmptyMapper().toJson(mcrd));
 		} catch (Exception e) {
 			logger.error(Throwables.getStackTraceAsString(e));
 			e.printStackTrace();

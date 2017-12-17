@@ -1,6 +1,8 @@
 package com.ichinait.food.service.dataAnalysis;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -231,6 +233,11 @@ public class DataAnalysisService {
 			double[][] d = (double[][]) temp.toDoubleArray();
 			if (d != null) {
 				mcrd.setResult(d);
+				for (int i = 0; i < d.length; i++) {
+					for (int j = 0; j < d[0].length; j++) {
+						System.out.print("......... "+ d);
+					}
+				}
 				logger.info("===========如果你看到这条说明d不为空======", d.toString());
 			}
 		} catch (Exception e) {
